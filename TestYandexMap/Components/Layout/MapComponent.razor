@@ -1,25 +1,23 @@
 ﻿@page "/map"
-
 @rendermode InteractiveServer
-@implements IDisposable
 @inject IJSRuntime JS
 
-
 <div class="map-wrap">
-    <div id="map"></div>
+    <iframe id="@_frameId"
+            src="map-frame.html"
+            frameborder="0"
+            class="map-frame"></iframe>
 </div>
 
 @code {
+    [Parameter] public string Address { get; set; } = "Санкт-Петербург";
+    private readonly string _frameId = $"map-frame-{Guid.NewGuid()}";
 
-    [Parameter]
-    public string Address { get; set; }
-
-    protected async override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("map.start", Address);
+            await JS.InvokeVoidAsync("mapFrame.sendAddress", _frameId, Address);
         }
     }
-    public void Dispose() => _ = JS.InvokeVoidAsync("map.dispose");
 }
