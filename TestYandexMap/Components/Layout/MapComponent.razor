@@ -1,0 +1,25 @@
+﻿@page "/map"
+
+@rendermode InteractiveServer
+@implements IDisposable
+@inject IJSRuntime JS
+
+
+<div class="map-wrap">
+    <div id="map"></div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Address { get; set; }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("map.start", Address);
+        }
+    }
+    public void Dispose() => _ = JS.InvokeVoidAsync("map.dispose");
+}

@@ -1,11 +1,13 @@
-﻿window.map = {
+﻿
+window.map = {
     start: function (address) {
         ymaps.ready(init);
 
         function init() {
             var myMap = new ymaps.Map("map", {
                 center: [55.76, 37.64],
-                zoom: 10
+                zoom: 10,
+                
             });
 
             ymaps.geocode(address).then(function (res) {
@@ -21,3 +23,9 @@
         }
     }
 }
+window.map.dispose = function () {
+    if (window.map._instance) {
+        window.map._instance.destroy();
+        window.map._instance = null;
+    }
+};
