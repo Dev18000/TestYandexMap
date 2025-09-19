@@ -1,0 +1,17 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+<div id="map" style="width: 600px; height: 400px;"></div>
+@code {
+
+    [Parameter]
+    public string Address { get; set; }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("map.start", Address);
+        }
+    }
+}
